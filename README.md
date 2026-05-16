@@ -3,8 +3,10 @@
 My solutions to [LeetCode's Top Interview 150](https://leetcode.com/studyplan/top-interview-150/), 
 written as I prep for Senior Full-Stack / SDE-2 interviews.
 
-**Language:** TypeScript (some Python where it's cleaner)
+**Language:** Python 3 (TypeScript for problems where types matter)
+
 **Timeline:** May 2026 → Sep 2026
+
 **Goal:** 150 problems solved, all categories covered.
 
 ## Progress
