@@ -1,0 +1,85 @@
+# ============================================================
+# LeetCode 169 - Majority Element
+# https://leetcode.com/problems/majority-element/
+# Difficulty: Easy
+# Pattern: Boyer-Moore Voting Algorithm
+# ============================================================
+#
+# PROBLEM:
+#   Given an array nums of size n, return the majority element.
+#   The majority element appears more than ⌊n / 2⌋ times.
+#   You may assume the majority element always exists.
+#
+# CONSTRAINTS:
+#   n == nums.length
+#   1 <= n <= 5 * 10^4
+#   -10^9 <= nums[i] <= 10^9
+#
+# ============================================================
+# APPROACH 1 — HashMap Counter
+# ============================================================
+# Idea:
+#   Count frequency of each element. Return the one with
+#   count > n // 2.
+#
+# Time:  O(n)
+# Space: O(n)
+# ============================================================
+
+class SolutionHashMap:
+    def majorityElement(self, nums: list[int]) -> int:
+        count = {}
+        n = len(nums)
+        for num in nums:
+            count[num] = count.get(num, 0) + 1
+            if count[num] > n // 2:
+                return num
+
+
+# ============================================================
+# APPROACH 2 — Boyer-Moore Voting Algorithm ✅ Optimal
+# ============================================================
+# Idea:
+#   Maintain a candidate and a counter. When counter hits 0,
+#   switch candidate. Majority element always survives because
+#   it outnumbers all others combined.
+#
+# Time:  O(n)
+# Space: O(1)
+# ============================================================
+
+class Solution:
+    def majorityElement(self, nums: list[int]) -> int:
+        candidate, count = None, 0
+
+        for num in nums:
+            if count == 0:
+                candidate = num
+            count += 1 if num == candidate else -1
+
+        return candidate
+
+
+# ============================================================
+# TESTS
+# ============================================================
+
+if __name__ == "__main__":
+    test_cases = [
+        ([3, 2, 3],              3),
+        ([2, 2, 1, 1, 1, 2, 2], 2),
+        ([1],                    1),
+        ([1, 1, 2],              1),
+        ([-1, -1, 2],           -1),
+    ]
+
+    for approach_name, SolClass in [
+        ("HashMap       ", SolutionHashMap),
+        ("Boyer-Moore   ", Solution),
+    ]:
+        print(f"\n── {approach_name} ──")
+        sol = SolClass()
+        for nums, expected in test_cases:
+            result = sol.majorityElement(nums)
+            status = "✅ PASS" if result == expected else "❌ FAIL"
+            print(f"  {status}  nums={nums} → {result}  (expected {expected})")
