@@ -1,0 +1,62 @@
+# ============================================================
+# LeetCode 189 - Rotate Array
+# https://leetcode.com/problems/rotate-array/
+# Difficulty: Medium
+# Pattern: Array Reversal
+# ============================================================
+#
+# APPROACH — Reverse Trick (O(1) Space) ✅ Optimal
+# ============================================================
+# Idea:
+#   Rotating right by k is equivalent to:
+#     1. Reverse the entire array
+#     2. Reverse the first k elements
+#     3. Reverse the remaining n-k elements
+#
+#   Example: [1,2,3,4,5,6,7], k=3
+#     Reverse all   → [7,6,5,4,3,2,1]
+#     Reverse [:3]  → [5,6,7,4,3,2,1]
+#     Reverse [3:]  → [5,6,7,1,2,3,4] ✅
+#
+# Time:  O(n)
+# Space: O(1)
+# ============================================================
+
+class Solution:
+    def rotate(self, nums: list[int], k: int) -> None:
+        n = len(nums)
+        k %= n  # handle k > n
+
+        def reverse(l, r):
+            while l < r:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+                r -= 1
+
+        reverse(0, n - 1)
+        reverse(0, k - 1)
+        reverse(k, n - 1)
+
+
+# ============================================================
+# TESTS
+# ============================================================
+
+if __name__ == "__main__":
+    import copy
+
+    test_cases = [
+        ([1, 2, 3, 4, 5, 6, 7], 3, [5, 6, 7, 1, 2, 3, 4]),
+        ([-1, -100, 3, 99],     2, [3, 99, -1, -100]),
+        ([1, 2],                3, [2, 1]),   # k > n
+        ([1],                   0, [1]),       # single element
+        ([1, 2, 3],             0, [1, 2, 3]), # k = 0
+    ]
+
+    sol = Solution()
+    print("── Reverse Trick ──")
+    for nums_orig, k, expected in test_cases:
+        nums = copy.copy(nums_orig)
+        sol.rotate(nums, k)
+        status = "✅ PASS" if nums == expected else "❌ FAIL"
+        print(f"  {status}  nums={nums_orig}, k={k} → {nums}  (expected {expected})")
